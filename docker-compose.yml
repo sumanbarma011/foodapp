@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysqldb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=foodappdb
+    volumes:
+      - ./mysqldata=/var/lib/mysql
+
+  foodapp:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    image: foodapp:latest
+    container_name: fdapp
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/main/resources/application.properties:/app/application.properties
+    environment:
+      - SPRING_CONFIG_LOCATION=file:/app/application.properties
+    depends_on:
+      - mysql
