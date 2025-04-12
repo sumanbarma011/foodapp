@@ -5,9 +5,9 @@ services:
     container_name: mysqldb
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=foodappdb
+      - MYSQL_DATABASE=FoodFrenzy
     volumes:
-      - ./mysqldata=/var/lib/mysql
+      - ./mysqldata:/var/lib/mysql
 
   foodapp:
     build:
