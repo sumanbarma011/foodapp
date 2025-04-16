@@ -11,7 +11,7 @@ pipeline {
         
         stage("docker image built ") {
             steps {
-                sh "docker build -t foodapp ."
+                sh "docker build -t foodapp -f Dockerfile-dev ."
             }
         }
         stage("push image to dockerhub ") {
@@ -25,8 +25,7 @@ pipeline {
         }
         stage("deploy application") {
             steps {
-                sh "docker run -itd --name onlinefoodapp -p 82:80 suman011/foodapp:dev"
-            }
+               sh "docker-compose up -d"
         }
     }
 }

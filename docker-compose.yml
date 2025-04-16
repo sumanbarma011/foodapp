@@ -10,10 +10,7 @@ services:
       - ./mysqldata:/var/lib/mysql
 
   foodapp:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    image: foodapp:latest
+    image: suman011/foodapp:dev
     container_name: fdapp
     ports:
       - "8080:8080"
