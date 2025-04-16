@@ -13,7 +13,7 @@ services:
     image: suman011/foodapp:dev
     container_name: fdapp
     ports:
-      - "8080:8080"
+      - "8081:8081"
     volumes:
       - ./src/main/resources/application.properties:/app/application.properties
     environment:
