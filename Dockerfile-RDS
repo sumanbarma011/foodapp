@@ -1,0 +1,29 @@
+# stage 1 just line node installation for java
+FROM 258515886679.dkr.ecr.us-east-1.amazonaws.com/maven3.8.3-openjdk-17:jdk17 AS build
+
+#Add maintainer, new user will know who have written this file
+LABEL maintainer ="suman828373737@gmail.com"
+
+#set working directory
+
+WORKDIR /src
+
+# copy source code from local to container
+
+COPY . /src
+
+#build application and skip the test cases 
+
+RUN mvn clean install -DskipTests=true && ls -al
+
+
+# stage 2 
+
+FROM 258515886679.dkr.ecr.us-east-1.amazonaws.com/openjdk17-alpine:17alpine AS deployer
+
+# copy build from stage 1
+COPY --from=build /src/target/*.jar /src/target/foodapp.jar
+
+#start the applicatiom
+
+ENTRYPOINT ["java","-jar","/src/target/foodapp.jar"]
