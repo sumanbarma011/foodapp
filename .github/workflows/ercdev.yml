@@ -29,14 +29,15 @@ jobs:
             docker tag foodapp:latest ${{ secrets.ECR_REPOSITORY_URI }}/foodapprepo:$BRANCH_NAME
             docker push ${{ secrets.ECR_REPOSITORY_URI }}/foodapprepo:$BRANCH_NAME  
 
-        # - name: Deploy application
-        #   uses: appleboy/ssh-action@v0.1.6
-        #   with:
-        #     host: ${{ secrets.SERVER_IP }}
-        #     username: ubuntu
-        #     key: ${{ secrets.SSH_KEY }}
-        #     # options: "-o StrictHostKeyChecking=no"
-        #     script: |
-        #       aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
-        #       cd /home/ubuntu/ecomapp
-        #       docker-compose up -d
+        - name: Deploy application
+          uses: appleboy/ssh-action@v0.1.6
+          with:
+            host: ${{ secrets.SERVER_IP }}
+            username: ubuntu
+            key: ${{ secrets.SSH_KEY }}
+            # options: "-o StrictHostKeyChecking=no"
+            script: |
+              aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
+              cd /home/ubuntu/foodapp
+              docker-compose -f phpmyadmin.yml up -d
+              docker-compose up -d
