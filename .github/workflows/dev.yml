@@ -18,7 +18,7 @@ jobs:
                   docker build -t foodecom -f Dockerfile-dev .
                   docker tag foodecom:latest ${{ secrets.DOCKERHUB_USERNAME }}/foodecom:$BRANCH_NAME
                   docker push ${{ secrets.DOCKERHUB_USERNAME }}/foodecom:$BRANCH_NAME
-          - name: deploy using ssh 
+          - name: deploy using ssh again
             uses: appleboy/ssh-action@v0.1.6
             with:
               host: ${{ secrets.SERVER_IP }}
