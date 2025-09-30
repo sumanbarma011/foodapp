@@ -18,4 +18,15 @@ jobs:
                   docker build -t foodecom -f Dockerfile-dev .
                   docker tag foodecom:latest ${{ secrets.DOCKERHUB_USERNAME }}/foodecom:$BRANCH_NAME
                   docker push ${{ secrets.DOCKERHUB_USERNAME }}/foodecom:$BRANCH_NAME
+          - name: deploy using ssh 
+            uses: appleboy/ssh-action@v0.1.6
+            with:
+              host: ${{ secrets.SERVER_IP }}
+              username: ubuntu
+              key: ${{ secrets.SSH_KEY }}
+              #options: ['-o StrictHostKeyChecking=no']
+              script: |
+                        cd /home/ubuntu/foodecom 
+                        docker-compose up -d
+
 
