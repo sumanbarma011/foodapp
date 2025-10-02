@@ -1,7 +1,7 @@
 name: Build and deploy using ECR
 on:
     push:
-        branches: 
+        tags: 
             - "*"
 jobs:
     build-deploy:
