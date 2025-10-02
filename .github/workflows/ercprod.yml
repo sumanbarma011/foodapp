@@ -1,0 +1,31 @@
+name: Build and deploy using ECR
+on:
+    push:
+        branches: 
+            - "*"
+jobs:
+    build-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: clone github
+              uses: actions/checkout@v3
+            - name: aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ap-south-1 
+            - name: login to aws ECR
+              run: |
+                aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
+            - name: push to aws ecr again
+              run: |
+                TAG=${GITHUB_REF#refs/tags/} 
+                docker build -t foodapp -f Dockerfile-dev .
+                docker tag foodapp:latest ${{ secrets.ECR_REPOSITORY_URI }}/foodapp:$TAG
+                docker push ${{ secrets.ECR_REPOSITORY_URI }}/foodapp:$TAG
+          
+
+
+
+
